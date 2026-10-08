@@ -1,0 +1,6 @@
+# Accounts v1 deploy config. No secrets in this file.
+# Do not run `supabase link` or `supabase db push` until Lee is ready.
+# Linking a project from this repo is not part of the draft PR.
+
+[functions.delete-account]
+verify_jwt = true
