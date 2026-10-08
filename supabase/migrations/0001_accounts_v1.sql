@@ -172,7 +172,7 @@ create table public.photos (
   size_bytes integer,
   uploaded_at timestamptz default now(),
   constraint photos_storage_path_owner check (
-    storage_path like (user_id::text || '/%')
+    storage_path like (user_id::text || '/' || car_id::text || '/%')
     and position('..' in storage_path) = 0
   )
 );
@@ -270,23 +270,49 @@ create policy inspections_delete on public.inspections
 
 create policy photos_select on public.photos
   for select to authenticated
-  using (user_id = auth.uid());
+  using (
+    user_id = auth.uid()
+    and exists (
+      select 1 from public.cars c
+      where c.id = car_id and c.user_id = auth.uid()
+    )
+  );
 create policy photos_insert on public.photos
   for insert to authenticated
   with check (
     user_id = auth.uid()
-    and storage_path like (auth.uid()::text || '/%')
+    and storage_path like (auth.uid()::text || '/' || car_id::text || '/%')
+    and exists (
+      select 1 from public.cars c
+      where c.id = car_id and c.user_id = auth.uid()
+    )
   );
 create policy photos_update on public.photos
   for update to authenticated
-  using (user_id = auth.uid())
+  using (
+    user_id = auth.uid()
+    and exists (
+      select 1 from public.cars c
+      where c.id = car_id and c.user_id = auth.uid()
+    )
+  )
   with check (
     user_id = auth.uid()
-    and storage_path like (auth.uid()::text || '/%')
+    and storage_path like (auth.uid()::text || '/' || car_id::text || '/%')
+    and exists (
+      select 1 from public.cars c
+      where c.id = car_id and c.user_id = auth.uid()
+    )
   );
 create policy photos_delete on public.photos
   for delete to authenticated
-  using (user_id = auth.uid());
+  using (
+    user_id = auth.uid()
+    and exists (
+      select 1 from public.cars c
+      where c.id = car_id and c.user_id = auth.uid()
+    )
+  );
 
 revoke all on table public.profiles from anon;
 revoke all on table public.cars from anon;
@@ -311,35 +337,62 @@ values (
   array['image/jpeg']::text[]
 );
 
-alter table storage.objects enable row level security;
+-- storage.objects already has row level security on.
+-- Supabase rejects `alter table storage.objects enable row level security`.
+-- Files live at {user id}/{car id}/{file}.jpg. The second folder must be a car this user owns.
 
 create policy car_photos_select on storage.objects
   for select to authenticated
   using (
     bucket_id = 'car-photos'
     and (storage.foldername(name))[1] = auth.uid()::text
+    and exists (
+      select 1 from public.cars c
+      where c.user_id = auth.uid()
+        and c.id::text = (storage.foldername(name))[2]
+    )
   );
 create policy car_photos_insert on storage.objects
   for insert to authenticated
   with check (
     bucket_id = 'car-photos'
     and (storage.foldername(name))[1] = auth.uid()::text
+    and exists (
+      select 1 from public.cars c
+      where c.user_id = auth.uid()
+        and c.id::text = (storage.foldername(name))[2]
+    )
   );
 create policy car_photos_update on storage.objects
   for update to authenticated
   using (
     bucket_id = 'car-photos'
     and (storage.foldername(name))[1] = auth.uid()::text
+    and exists (
+      select 1 from public.cars c
+      where c.user_id = auth.uid()
+        and c.id::text = (storage.foldername(name))[2]
+    )
   )
   with check (
     bucket_id = 'car-photos'
     and (storage.foldername(name))[1] = auth.uid()::text
+    and exists (
+      select 1 from public.cars c
+      where c.user_id = auth.uid()
+        and c.id::text = (storage.foldername(name))[2]
+    )
   );
 create policy car_photos_delete on storage.objects
   for delete to authenticated
   using (
     bucket_id = 'car-photos'
     and (storage.foldername(name))[1] = auth.uid()::text
+    and exists (
+      select 1 from public.cars c
+      where c.user_id = auth.uid()
+        and c.id::text = (storage.foldername(name))[2]
+    )
   );
 
 -- ---------------------------------------------------------------------------

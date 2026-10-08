@@ -2169,8 +2169,7 @@ section.full-photo{padding:0}
 
 /* ─── Accounts v1. Hidden until ACCOUNTS_ENABLED or localhost ?accounts=1. ─── */
 html:not(.accounts-on) .accounts-only{display:none !important}
-html.accounts-on #demo-card-heading,
-html.accounts-on #demo-w10{display:none}
+html.accounts-on #demo-card-heading{display:none}
 .accounts-pill{
   appearance:none;background:transparent;color:var(--ink);
   border:1px solid var(--ink);border-radius:999px;
@@ -2203,6 +2202,14 @@ html.accounts-on #demo-w10{display:none}
 }
 .shop-check input{width:22px;height:22px;margin-top:2px;flex-shrink:0}
 .shop-check small{display:block;color:var(--ink-3);font-size:12px;margin-top:4px}
+#welcome-sheet .shop-check{
+  font-family:var(--sans);font-size:18px;font-weight:400;
+  letter-spacing:normal;text-transform:none;color:var(--ink);line-height:1.5;
+}
+#welcome-sheet .shop-check small{
+  display:block;font-size:18px;font-weight:400;letter-spacing:normal;
+  text-transform:none;color:var(--ink-2);margin-top:6px;line-height:1.5;
+}
 .account-phone-label{
   font-family:var(--sans);font-size:13px;color:var(--ink-2);
   display:block;margin:14px 0 6px;
@@ -3080,7 +3087,7 @@ html.accounts-on #demo-w10{display:none}
           <span class="demo-garage-note">Saved only on this device</span>
         </span>
       </div>
-      <p class="signin-meta" id="demo-w10">Demo garage: saved only on this device and cleared if site data is wiped. Sign in to save to your account.</p>
+      <p class="signin-meta" id="demo-w10">Demo garage: saved only on this device and cleared if site data is wiped.<span class="accounts-only"> Sign in to save to your account.</span></p>
       <p class="signin-meta" id="deleted-banner" hidden>Your account and everything in it is deleted.</p>
     </div>
 
@@ -3312,6 +3319,7 @@ let accountDisplayName = '';
 let accountCache = emptyAccountCache();
 let accountOutbox = emptyOutbox();
 let sbClient = null;
+let authScriptsPromise = null;
 let googleRawNonce = '';
 let importCardForced = false;
 let accountsBusy = false;
@@ -4424,7 +4432,8 @@ function printInspection(){
 
 
 // ─── Accounts v1 ────────────────────────────────────────────
-// Google Identity Services has no pinned build. Loaded only when the flag is on.
+// Google Identity Services has no pinned build.
+// Loaded only after Sign in is tapped, or when a stored session needs restoring.
 // https://accounts.google.com/gsi/client
 
 function accountsFeatureOn(){
@@ -4610,7 +4619,7 @@ function onSignInPill(){
     card.style.display = '';
     card.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-  mountGoogleButton();
+  beginSignIn();
 }
 function sha256Hex(text){
   return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function(buf){
@@ -5125,6 +5134,10 @@ function pushCarInsert(car){
   return job;
 }
 function remapCarId(oldId, row){
+  // Remove the pending car before its id changes. The retry list holds the
+  // same object as the cache, so swapping the id first left the saved car
+  // on the list forever.
+  accountOutbox.inserts = accountOutbox.inserts.filter(function(c){ return c.id !== oldId; });
   const mapped = fromCarRow(row);
   const car = accountCache.cars.find(function(c){ return c.id === oldId; });
   if(car){
@@ -5149,7 +5162,6 @@ function remapCarId(oldId, row){
     accountOutbox.rares[mapped.id] = accountOutbox.rares[oldId];
     delete accountOutbox.rares[oldId];
   }
-  accountOutbox.inserts = accountOutbox.inserts.filter(function(c){ return c.id !== oldId; });
   try{
     if(localStorage.getItem('da-996-active-car-v1') === oldId){
       localStorage.setItem('da-996-active-car-v1', mapped.id);
@@ -5346,8 +5358,15 @@ function flushOutbox(){
   inserts.forEach(function(car){
     chain = chain.then(function(){
       if(!accountOutbox.inserts.some(function(c){ return c.id === car.id; })) return;
+      // Already saved (server id, not a pending- local id). Drop it so a
+      // reload does not warn forever, and keep going so queued inspections send.
+      if(String(car.id).indexOf('pending-') !== 0){
+        accountOutbox.inserts = accountOutbox.inserts.filter(function(c){ return c.id !== car.id; });
+        persistOutbox();
+        return;
+      }
       return pushCarInsert(car).then(function(ok){
-        if(!ok) throw new Error('insert');
+        if(!ok) showSaveWarning();
       });
     });
   });
@@ -5430,7 +5449,7 @@ function showSignedOutGarage(){
   if(typeof renderGarage === 'function') renderGarage();
   if(typeof refreshCarSelect === 'function') refreshCarSelect();
   if(typeof renderRareSpec === 'function') renderRareSpec();
-  if(accountsFeatureOn()) mountGoogleButton();
+  if(accountsFeatureOn() && window.google && google.accounts) mountGoogleButton();
 }
 function accountSignOut(){
   clearAccountDeviceCopies();
@@ -5500,31 +5519,61 @@ function initAccounts(){
   window.addEventListener('online', function(){
     if(accountMode) flushOutbox();
   });
-  loadScript(
+  if(storedSessionNeedsRestore()){
+    ensureAuthScripts().then(function(){
+      return sbClient.auth.getSession();
+    }).then(function(result){
+      const session = result && result.data && result.data.session;
+      if(session) return enterAccount(session);
+    }).catch(function(){
+      showSaveWarning();
+    });
+  }
+}
+
+function storedSessionNeedsRestore(){
+  try{
+    const raw = localStorage.getItem('sb-iubuiipzegwlzqjoftpj-auth-token');
+    if(!raw) return false;
+    const parsed = JSON.parse(raw);
+    return !!(parsed && (parsed.access_token || parsed.refresh_token));
+  }catch(e){
+    return false;
+  }
+}
+function ensureAuthScripts(){
+  if(authScriptsPromise) return authScriptsPromise;
+  authScriptsPromise = loadScript(
     'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js',
     { integrity: 'sha384-BWcjm9OdFth9TbhCxZPdm+gAOUMAzQy9nmTs12ioXdCcbVnJaPMn+fMUoQCLt60R' }
   ).then(function(){
     return loadScript('https://accounts.google.com/gsi/client');
   }).then(function(){
-    sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: false,
-      },
-    });
-    sbClient.auth.onAuthStateChange(function(event, session){
-      if(session && session.user){
-        enterAccount(session);
-      } else if(event === 'SIGNED_OUT' && accountMode){
-        clearAccountDeviceCopies();
-        showSignedOutGarage();
-      }
-    });
-    return sbClient.auth.getSession();
-  }).then(function(result){
-    const session = result && result.data && result.data.session;
-    if(session) return enterAccount(session);
+    if(!sbClient){
+      sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: false,
+        },
+      });
+      sbClient.auth.onAuthStateChange(function(event, session){
+        if(session && session.user){
+          enterAccount(session);
+        } else if(event === 'SIGNED_OUT' && accountMode){
+          clearAccountDeviceCopies();
+          showSignedOutGarage();
+        }
+      });
+    }
+  }).catch(function(err){
+    authScriptsPromise = null;
+    throw err;
+  });
+  return authScriptsPromise;
+}
+function beginSignIn(){
+  return ensureAuthScripts().then(function(){
     return mountGoogleButton();
   }).catch(function(){
     showSaveWarning();
