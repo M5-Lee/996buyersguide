@@ -2141,6 +2141,118 @@ section.full-photo{padding:0}
    ═══════════════════════════════════════════ */
 
 
+
+/* Phone tap target for the checklist mark. The drawn circle stays 22px.
+   Product Batch 2 follow-up. Desktop is unchanged. */
+@media screen and (max-width:520px){
+  .cl-item{grid-template-columns:44px 1fr auto}
+  .cl-check,
+  .cl-check.checked,
+  .cl-check.flag{
+    width:44px;height:44px;margin-top:-6px;
+    background:transparent;border-color:transparent;border-radius:0;
+    position:relative;
+  }
+  .cl-check::after{
+    content:'';
+    position:absolute;left:50%;top:50%;
+    width:22px;height:22px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    border:1.5px solid var(--ink-3);
+    box-sizing:border-box;
+    pointer-events:none;
+  }
+  .cl-check.checked::after{background:var(--ink);border-color:var(--ink)}
+  .cl-check.flag::after{background:var(--accent);border-color:var(--accent)}
+}
+
+/* ─── Accounts v1. Hidden until ACCOUNTS_ENABLED or localhost ?accounts=1. ─── */
+html:not(.accounts-on) .accounts-only{display:none !important}
+html.accounts-on #demo-card-heading,
+html.accounts-on #demo-w10{display:none}
+.accounts-pill{
+  appearance:none;background:transparent;color:var(--ink);
+  border:1px solid var(--ink);border-radius:999px;
+  min-height:44px;min-width:44px;padding:0 14px;
+  font-family:var(--sans);font-size:11px;font-weight:700;
+  letter-spacing:0.08em;text-transform:none;cursor:pointer;
+  flex-shrink:0;
+}
+.accounts-pill:hover{background:var(--ink);color:#fff}
+@media (max-width:640px){
+  html.accounts-on .site-header-row1 .build-label{display:none}
+}
+@media (max-width:520px){
+  html.accounts-on .site-header-row1 .l{min-width:0}
+  html.accounts-on .site-header-row1 .l > span:last-child{
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:46vw;
+  }
+}
+.signin-divider{border:0;border-top:1px solid var(--rule);margin:22px 0}
+#google-signin-btn{min-height:44px}
+.account-bar{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  flex-wrap:wrap;margin-bottom:28px;
+  font-family:var(--sans);font-size:14px;color:var(--ink-2);
+}
+.shop-check{
+  display:flex;gap:12px;align-items:flex-start;
+  font-family:var(--sans);font-size:14px;line-height:1.45;color:var(--ink);
+  margin-top:8px;
+}
+.shop-check input{width:22px;height:22px;margin-top:2px;flex-shrink:0}
+.shop-check small{display:block;color:var(--ink-3);font-size:12px;margin-top:4px}
+.account-phone-label{
+  font-family:var(--sans);font-size:13px;color:var(--ink-2);
+  display:block;margin:14px 0 6px;
+}
+.account-phone-wrap input{
+  width:100%;max-width:320px;border:1px solid var(--rule);background:#fff;
+  padding:12px 14px;border-radius:4px;
+  font-family:var(--sans);font-size:15px;color:var(--ink);
+}
+.link-button{
+  appearance:none;background:none;border:0;padding:8px 0;
+  font-family:var(--sans);font-size:13px;font-weight:600;
+  color:var(--accent);cursor:pointer;text-decoration:underline;
+  min-height:44px;
+}
+.btn-danger{
+  appearance:none;border:0;background:#c43d2c;color:#fff;
+  font-family:var(--sans);font-size:11px;font-weight:700;
+  letter-spacing:0.16em;text-transform:uppercase;
+  padding:14px 22px;border-radius:4px;cursor:pointer;min-height:44px;
+}
+.btn-danger:hover{background:#a33224}
+.delete-panel{margin-top:18px}
+.delete-panel p{
+  font-family:var(--sans);font-size:14px;line-height:1.5;
+  color:var(--ink-2);margin:0 0 14px;
+}
+.delete-type-row{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:14px}
+.delete-type-row label{
+  font-family:var(--sans);font-size:12px;font-weight:600;color:var(--ink-2);
+}
+.delete-type-row input{
+  border:1px solid var(--rule);background:#fff;padding:12px 14px;border-radius:4px;
+  font-family:var(--sans);font-size:16px;letter-spacing:0.12em;width:180px;
+}
+.import-copy{
+  font-family:var(--sans);font-size:15px;line-height:1.5;color:var(--ink-2);margin:0 0 8px;
+}
+.save-warn{
+  position:fixed;left:16px;right:16px;bottom:16px;z-index:80;
+  background:#0a0a0a;color:#fff;border:1px solid var(--accent);
+  padding:14px 16px;border-radius:6px;
+  font-family:var(--sans);font-size:14px;line-height:1.45;
+  max-width:520px;margin:0 auto;
+}
+.colophon-bottom a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:1px}
+@media print{
+  .save-warn,.accounts-pill,#welcome-sheet,#import-card,#account-section{display:none !important}
+}
+
 </style>
 </head>
 <body>
@@ -2157,7 +2269,7 @@ section.full-photo{padding:0}
 <header class="site-header" id="site-header">
   <div class="site-header-row1">
     <div class="l"><span class="dot"></span><span>996 Buyer's Guide</span></div>
-    <div class="r"><span>Build v15 <span class="midot">·</span> 2026</span></div>
+    <div class="r"><span class="build-label">Build v15 <span class="midot">·</span> 2026</span></div>
   </div>
   <nav class="tab-nav" id="tab-nav" role="tablist" aria-label="Sections">
     <button class="active" data-tab="overview" role="tab"><span class="tab-num">01</span>Overview</button>
@@ -2935,6 +3047,7 @@ section.full-photo{padding:0}
       <span>© 2026 996 Buyer's Guide</span>
       <span>Build v15 <span class="midot">·</span> The 996</span>
       <span>Killeen, TX</span>
+      <span class="colophon-legal"><a href="/privacy">Privacy</a> <span class="midot">·</span> <a href="/terms">Terms</a></span>
     </div>
   </div>
 </section>
@@ -2953,32 +3066,56 @@ section.full-photo{padding:0}
     <h1 class="garage-title">My <em>Garage.</em></h1>
     <p class="garage-deck">Your 996, your notes, your inspections — all in one place. Save a buyer's guide while you're at the seller's, pick it back up at home.</p>
 
-    <!-- Sign-in / Sign-up card (mocked) -->
     <div class="signin-card" id="signin-card">
-      <h3>Try the demo <em style="font-style:italic;color:var(--ink-3);font-weight:300">— data stays in this browser</em></h3>
-      <div class="signin-grid">
-        <div class="field">
-          <label for="garage-email">Email</label>
-          <input id="garage-email" type="email" placeholder="you@example.com" autocomplete="email">
-        </div>
-        <div class="field">
-          <label for="garage-pass">Password</label>
-          <input id="garage-pass" type="password" placeholder="••••••••" autocomplete="current-password">
-        </div>
+      <h3 id="demo-card-heading">Try the demo <em style="font-style:italic;color:var(--ink-3);font-weight:300">— data stays in this browser</em></h3>
+      <div id="accounts-signin-block" class="accounts-only" hidden>
+        <div id="google-signin-btn"></div>
+        <p class="signin-meta">Free educational guide. No guarantees about any car or purchase. Not affiliated with Porsche.</p>
+        <p class="signin-meta">By signing in you agree to our <a href="/terms">Terms</a> and <a href="/privacy">Privacy page</a>.</p>
+        <hr class="signin-divider">
       </div>
       <div class="signin-actions">
-        <button class="btn-primary" onclick="garageMockSignIn()">Sign in</button>
         <span class="demo-garage-cta">
-          <button class="btn-secondary" onclick="garageMockSignIn()">Start demo garage</button>
+          <button class="btn-secondary" type="button" onclick="startDemoGarage()">Start demo garage</button>
           <span class="demo-garage-note">Saved only on this device</span>
         </span>
-        <span class="signin-meta">Demo mock — not a real account. <a onclick="garageMockSignIn()">Or skip and try the demo</a> →</span>
       </div>
-      <p class="signin-meta">This is a demo mock, not a real account. Anything you save stays in this browser only and clears if site data is wiped. Cloud sync is not live.</p>
+      <p class="signin-meta" id="demo-w10">Demo garage: saved only on this device and cleared if site data is wiped. Sign in to save to your account.</p>
+      <p class="signin-meta" id="deleted-banner" hidden>Your account and everything in it is deleted.</p>
+    </div>
+
+    <div id="welcome-sheet" class="signin-card accounts-only" hidden>
+      <h3>Welcome</h3>
+      <label class="shop-check">
+        <input id="welcome-shop" type="checkbox">
+        <span>Doctor Automotive may contact me about my car or maintenance.<small>Optional. Off unless you check it. You can change this any time.</small></span>
+      </label>
+      <div id="welcome-phone-wrap" class="account-phone-wrap" hidden>
+        <label class="account-phone-label" for="welcome-phone">Phone (optional). Only used if you checked the box above.</label>
+        <input id="welcome-phone" type="tel" autocomplete="tel">
+      </div>
+      <p class="signin-meta">Free educational guide. No guarantees about any car or purchase. Not affiliated with Porsche.</p>
+      <p class="signin-meta">By signing in you agree to our <a href="/terms">Terms</a> and <a href="/privacy">Privacy page</a>.</p>
+      <div class="signin-actions">
+        <button class="btn-primary" type="button" onclick="continueWelcome()">Continue</button>
+      </div>
     </div>
 
     <!-- Active demo state below -->
     <div id="garage-app" style="display:none">
+
+      <div id="account-bar" class="account-bar accounts-only" hidden>
+        <span id="account-email"></span>
+        <button class="btn-secondary" type="button" onclick="accountSignOut()">Sign out</button>
+      </div>
+
+      <div id="import-card" class="signin-card accounts-only" hidden>
+        <p class="import-copy" id="import-copy"></p>
+        <div class="signin-actions">
+          <button class="btn-primary" type="button" id="import-move-btn" onclick="moveDemoGarage()">Move cars</button>
+          <button class="btn-secondary" type="button" onclick="dismissDemoImport()">Not now</button>
+        </div>
+      </div>
 
       <!-- Your Cars -->
       <div class="garage-section">
@@ -2986,6 +3123,7 @@ section.full-photo{padding:0}
           <h3>Your <em style="font-style:italic;color:var(--accent);font-weight:300">996s.</em></h3>
           <button class="btn-secondary" onclick="toggleAddCar()">＋ Add a 996</button>
         </div>
+        <button class="link-button accounts-only" type="button" id="move-demo-link" hidden onclick="showImportCard()">Move demo garage</button>
         <p class="sub">Add a car you own, or one you're seriously considering. You can attach inspection sheets to it from the Buyer's Guide tab.</p>
 
                 <div class="add-car-form" id="add-car-form">
@@ -3114,14 +3252,39 @@ section.full-photo{padding:0}
         </div>
       </div>
 
+      <div id="account-section" class="garage-section accounts-only" hidden>
+        <h3>Account</h3>
+        <label class="shop-check">
+          <input id="account-shop" type="checkbox">
+          <span>Doctor Automotive may contact me about my car or maintenance.<small>Optional. Off unless you check it. You can change this any time.</small></span>
+        </label>
+        <div id="account-phone-wrap" class="account-phone-wrap" hidden>
+          <label class="account-phone-label" for="account-phone">Phone (optional). Only used if you checked the box above.</label>
+          <input id="account-phone" type="tel" autocomplete="tel">
+        </div>
+        <div class="delete-panel" id="delete-panel">
+          <div class="signin-actions">
+            <button class="btn-secondary" type="button" onclick="document.getElementById('delete-copy').hidden=false">Delete my account</button>
+          </div>
+          <div id="delete-copy" hidden>
+            <p>This permanently deletes your account, your garage, your inspections, your photos, and your shop-contact choice. This can't be undone.</p>
+            <button class="btn-danger" type="button" onclick="revealDeleteConfirm()">Delete everything</button>
+            <div id="delete-type-row" class="delete-type-row" hidden>
+              <label for="delete-confirm-text">Type DELETE</label>
+              <input id="delete-confirm-text" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false">
+              <button class="btn-danger" type="button" onclick="confirmDeleteAccount()">Delete my account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="garage-section" style="margin-top:80px">
-        <h3 style="font-size:24px">What this would unlock <em style="font-style:italic;color:var(--accent);font-weight:300">later.</em></h3>
+        <h3 style="font-size:24px">Ideas for later, not built yet</h3>
         <p class="sub" style="font-size:14px">Some ideas — none of these are built. They're listed so we can talk through what's worth doing first.</p>
         <ul style="font-family:var(--sans);font-size:14px;color:var(--ink-2);line-height:1.8;padding-left:20px;list-style:disc">
           <li>Auto-decode the VIN to year, market, and engine code.</li>
           <li>Track service intervals — flag oil changes due, IMS history, brake fluid age.</li>
-          <li>“Schedule this with Doctor Automotive” button on each saved inspection flag.</li>
-          <li>Share a saved inspection with a friend or with the shop before a PPI appointment.</li>
+          <li><a href="tel:+12543504110">Schedule this with Doctor Automotive</a></li>
           <li>Print or PDF a personalized buyer's guide that already has the car's specs in it.</li>
         </ul>
       </div>
@@ -3132,7 +3295,27 @@ section.full-photo{padding:0}
 </div>
 
 <!-- v10: tab panels end -->
+<p id="save-warn" class="save-warn" hidden>Not saved yet - check your connection. We'll try again.</p>
 <script>
+// Flip ACCOUNTS_ENABLED only after Risk's full privacy page + terms are live and Lee says yes (wall 1).
+const ACCOUNTS_ENABLED = false;
+const SUPABASE_URL = 'https://iubuiipzegwlzqjoftpj.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_vPL-gn_zeK-rlHk1XA6SdA_NUiH2_yC';
+const GOOGLE_CLIENT_ID = '332840811495-vgn4nn1lakvdbe9m5u0i2smast84ljh4.apps.googleusercontent.com';
+const SHOP_WORDING_VERSION = '2026-10-08';
+const PRIVACY_TERMS_VERSION = '2026-10-08';
+const OUTBOX_KEY = 'da-996-account-outbox-v1';
+let accountMode = false;
+let accountEmail = '';
+let accountUserId = '';
+let accountDisplayName = '';
+let accountCache = emptyAccountCache();
+let accountOutbox = emptyOutbox();
+let sbClient = null;
+let googleRawNonce = '';
+let importCardForced = false;
+let accountsBusy = false;
+
 // ───────────────────────────────────────────
 // SCROLL PROGRESS
 // ───────────────────────────────────────────
@@ -3462,10 +3645,17 @@ function refreshCarSelect(){
 
 // ─── Per-car inspection persistence ───────────────
 function loadCarInspectionState(carId){
+  if(accountMode && isAccountCar(carId)){
+    return accountCache.answers[carId] ? accountCache.answers[carId] : {};
+  }
   try{ return JSON.parse(localStorage.getItem('da-996-ppi-car-'+carId) || 'null'); }
   catch{ return null; }
 }
 function saveCarInspectionState(carId, state){
+  if(accountMode && isAccountCar(carId)){
+    accountCache.answers[carId] = cleanAnswers(state);
+    return;
+  }
   try{ localStorage.setItem('da-996-ppi-car-'+carId, JSON.stringify(state)); }catch{}
 }
 
@@ -3489,6 +3679,11 @@ function autoSaveCurrentInspection(){
     else if(_liveV.classList.contains('caution')) vClass = 'vc-caution';
     else if(_liveV.classList.contains('pass'))    vClass = 'vc-pass';
     else                                          vClass = 'vc-pending';
+  }
+
+  if(accountMode && isAccountCar(sel.value)){
+    accountPersistInspection(sel.value, done, flags, verdict, vClass);
+    return;
   }
 
   // Persist a single latest-snapshot per car in the inspections array
@@ -3564,24 +3759,46 @@ const GARAGE_KEY = 'da-996-garage-v1';
 const INSP_KEY   = 'da-996-inspections-v1';
 
 function loadGarage(){
+  if(accountMode && accountCache){
+    return {
+      signedIn: true,
+      email: accountEmail || '',
+      cars: (accountCache.cars || []).map(function(c){ return Object.assign({}, c); }),
+    };
+  }
   try{ return JSON.parse(localStorage.getItem(GARAGE_KEY) || '{"signedIn":false,"cars":[]}'); }
   catch{ return {signedIn:false, cars:[]}; }
 }
-function saveGarage(g){ try{ localStorage.setItem(GARAGE_KEY, JSON.stringify(g)); }catch{} }
+function saveGarage(g){
+  if(accountMode) return;
+  try{ localStorage.setItem(GARAGE_KEY, JSON.stringify(g)); }catch{}
+}
 function loadInsp(){
+  if(accountMode && accountCache){
+    return (accountCache.inspections || []).map(function(i){ return Object.assign({}, i); });
+  }
   try{ return JSON.parse(localStorage.getItem(INSP_KEY) || '[]'); }
   catch{ return []; }
 }
-function saveInsp(arr){ try{ localStorage.setItem(INSP_KEY, JSON.stringify(arr)); }catch{} }
+function saveInsp(arr){
+  if(accountMode) return;
+  try{ localStorage.setItem(INSP_KEY, JSON.stringify(arr)); }catch{}
+}
 
-function garageMockSignIn(){
-  const g = loadGarage();
+function startDemoGarage(){
+  if(accountMode) return;
+  const g = readDemoRaw();
   g.signedIn = true;
-  g.email = (document.getElementById('garage-email')||{}).value || 'demo@doctorauto.example';
-  saveGarage(g);
-  document.getElementById('signin-card').style.display = 'none';
-  document.getElementById('garage-app').style.display = 'block';
+  if(!Array.isArray(g.cars)) g.cars = [];
+  try{ localStorage.setItem(GARAGE_KEY, JSON.stringify(g)); }catch(e){}
+  const banner = document.getElementById('deleted-banner');
+  if(banner) banner.hidden = true;
+  const card = document.getElementById('signin-card');
+  const app = document.getElementById('garage-app');
+  if(card) card.style.display = 'none';
+  if(app) app.style.display = 'block';
   renderGarage();
+  if(typeof refreshCarSelect === 'function') refreshCarSelect();
 }
 
 function toggleAddCar(){
@@ -3609,6 +3826,15 @@ function saveCar(){
     alert('Year and Model are required (this is a demo, not a serious validator).');
     return;
   }
+  if(accountMode){
+    accountAddCar(car);
+    ['car-year','car-color','car-mileage','car-vin','car-notes'].forEach(id=>{
+      const el=document.getElementById(id); if(el) el.value='';
+    });
+    const form = document.getElementById('add-car-form');
+    if(form && form.classList.contains('open')) toggleAddCar();
+    return;
+  }
   const g = loadGarage();
   g.cars.push(car);
   saveGarage(g);
@@ -3622,6 +3848,10 @@ function saveCar(){
 
 function deleteCar(id){
   if(!confirm('Remove this car from your garage?')) return;
+  if(accountMode && isAccountCar(id)){
+    accountDeleteCar(id);
+    return;
+  }
   const g = loadGarage();
   g.cars = g.cars.filter(c=>c.id!==id);
   saveGarage(g);
@@ -3639,6 +3869,7 @@ function statusLabel(s){
 }
 
 function renderGarage(){
+  if(typeof setGarageChrome === 'function') setGarageChrome();
   const g = loadGarage();
   const list = document.getElementById('car-list');
   const empty = document.getElementById('empty-garage');
@@ -3744,10 +3975,39 @@ const RARESPEC = [
 
 const RARESPEC_KEY = 'da-996-rarespec-v1';
 function loadRareSpec(){
-  try{ return JSON.parse(localStorage.getItem(RARESPEC_KEY) || '{}'); }
-  catch{ return {}; }
+  let local = {};
+  try{ local = JSON.parse(localStorage.getItem(RARESPEC_KEY) || '{}'); }
+  catch(e){ local = {}; }
+  if(!accountMode || !accountCache) return local;
+  const merged = {};
+  if(local._anon) merged._anon = local._anon;
+  (accountCache.cars || []).forEach(function(car){
+    const ticks = {};
+    (car.rare_spec_ids || []).forEach(function(id){ ticks[id] = true; });
+    merged[car.id] = ticks;
+  });
+  return merged;
 }
-function saveRareSpec(s){ try{ localStorage.setItem(RARESPEC_KEY, JSON.stringify(s)); }catch{} }
+function saveRareSpec(s){
+  let local = {};
+  try{ local = JSON.parse(localStorage.getItem(RARESPEC_KEY) || '{}'); }
+  catch(e){ local = {}; }
+  if(!accountMode || !accountCache){
+    try{ localStorage.setItem(RARESPEC_KEY, JSON.stringify(s)); }catch(err){}
+    return;
+  }
+  if(s._anon) local._anon = s._anon;
+  else delete local._anon;
+  try{ localStorage.setItem(RARESPEC_KEY, JSON.stringify(local)); }catch(err){}
+  (accountCache.cars || []).forEach(function(car){
+    const next = Object.keys(s[car.id] || {}).filter(function(id){ return s[car.id][id]; });
+    const prev = (car.rare_spec_ids || []).slice().sort().join(',');
+    const now = next.slice().sort().join(',');
+    if(prev === now) return;
+    car.rare_spec_ids = next;
+    queueRare(car.id, next);
+  });
+}
 
 function renderRareSpec(){
   const grid = document.getElementById('rarespec-grid');
@@ -3840,9 +4100,11 @@ function onPickerChange(){
   const mileage = document.getElementById('vp-mileage')?.value || '';
 
   // Drive the hidden chassis/trans selects
-  const chassisKey = deriveChassisFromYearModel(year, model);
+  const preserved = window._preserveInspectionFilters || null;
+  const chassisKey = (preserved && preserved.chassis_key) ? preserved.chassis_key : deriveChassisFromYearModel(year, model);
   const cs = document.getElementById('chassis-select'); if(cs) cs.value = chassisKey;
-  const ts = document.getElementById('trans-select');   if(ts) ts.value = trans;
+  const transKey = (preserved && preserved.trans_key != null) ? preserved.trans_key : trans;
+  const ts = document.getElementById('trans-select');   if(ts) ts.value = transKey;
 
   // Persist picker selections
   try{
@@ -3895,10 +4157,21 @@ function saveThisCarFromPicker(){
   const mileage = document.getElementById('vp-mileage')?.value || '';
   if(!year || !model){ return; }     // button is disabled in this state, but defensive
 
-  // Auto-sign-in if needed (concept demo only — no real auth)
+  if(accountMode){
+    accountAddCar({
+      year: year, model: model,
+      trans: trans === 'mt' ? '6MT' : (trans === 'at' ? 'Tiptronic' : ''),
+      color: color, mileage: mileage,
+      vin: '', status: 'shopping',
+      notes: "Added from Buyer's Guide picker",
+    });
+    refreshSaveCarButtonState();
+    if(typeof savePromptDismiss === 'function') savePromptDismiss();
+    return;
+  }
   let g = (typeof loadGarage === 'function') ? loadGarage() : {signedIn:false, cars:[]};
   if(!g.signedIn){
-    if(typeof garageMockSignIn === 'function'){ garageMockSignIn(); }
+    if(typeof startDemoGarage === 'function'){ startDemoGarage(); }
     g = loadGarage();
   }
 
@@ -3996,10 +4269,9 @@ function savePromptAccept(){
     'car-color':  document.getElementById('vp-color')?.value,
     'car-mileage':document.getElementById('vp-mileage')?.value,
   };
-  // If signed in, open the Add-Car form and populate
-  if(typeof garageMockSignIn === 'function'){
+  if(!accountMode){
     const g = (typeof loadGarage === 'function') ? loadGarage() : {signedIn:false};
-    if(!g.signedIn){ garageMockSignIn(); }
+    if(!g.signedIn && typeof startDemoGarage === 'function') startDemoGarage();
   }
   // Open the Add-Car form
   setTimeout(()=>{
@@ -4054,7 +4326,13 @@ function savePromptDismiss(){
     setIf('vp-color',   car.color);
     setIf('vp-mileage', car.mileage);
     setIf('vp-trans',   car.trans === '6MT' ? 'mt' : (car.trans === 'Tiptronic' ? 'at' : ''));
+    if(accountMode && accountCache && accountCache.meta && accountCache.meta[car.id]){
+      window._preserveInspectionFilters = accountCache.meta[car.id];
+    } else {
+      window._preserveInspectionFilters = null;
+    }
     onPickerChange();
+    window._preserveInspectionFilters = null;
     refreshSaveCarButtonState();
   };
 })();
@@ -4143,6 +4421,1117 @@ function printInspection(){
     }
   };
 })();
+
+
+// ─── Accounts v1 ────────────────────────────────────────────
+// Google Identity Services has no pinned build. Loaded only when the flag is on.
+// https://accounts.google.com/gsi/client
+
+function accountsFeatureOn(){
+  if(ACCOUNTS_ENABLED) return true;
+  // Local test override. Never honored on the live domain.
+  try{
+    return location.hostname === 'localhost'
+      && new URLSearchParams(location.search).get('accounts') === '1';
+  }catch(e){
+    return false;
+  }
+}
+
+function emptyAccountCache(){
+  return { cars: [], inspections: [], answers: {}, meta: {}, profile: null };
+}
+function emptyOutbox(){
+  return { inserts: [], inspections: {}, rares: {}, deletes: [], profile: null };
+}
+function isAccountCar(id){
+  return !!(accountMode && accountCache && (accountCache.cars || []).some(function(c){ return c.id === id; }));
+}
+function cleanAnswers(state){
+  const out = {};
+  if(!state) return out;
+  Object.keys(state).forEach(function(key){
+    if(state[key] === 'done' || state[key] === 'flag') out[key] = state[key];
+  });
+  return out;
+}
+function readDemoRaw(){
+  try{ return JSON.parse(localStorage.getItem('da-996-garage-v1') || '{"signedIn":false,"cars":[]}'); }
+  catch(e){ return { signedIn: false, cars: [] }; }
+}
+function demoCarCount(){
+  const g = readDemoRaw();
+  return (g.cars || []).length;
+}
+function flashSaved(ms){
+  const sv = document.getElementById('ic-saved');
+  if(!sv) return;
+  sv.classList.add('show');
+  setTimeout(function(){ sv.classList.remove('show'); }, ms || 1200);
+}
+function showSaveWarning(){
+  const el = document.getElementById('save-warn');
+  if(el) el.hidden = false;
+}
+function hideSaveWarning(){
+  if(outboxPending()) return;
+  const el = document.getElementById('save-warn');
+  if(el) el.hidden = true;
+}
+function outboxPending(){
+  return !!(
+    accountOutbox.inserts.length ||
+    accountOutbox.deletes.length ||
+    Object.keys(accountOutbox.inspections).length ||
+    Object.keys(accountOutbox.rares).length ||
+    accountOutbox.profile
+  );
+}
+function persistOutbox(){
+  try{ localStorage.setItem(OUTBOX_KEY, JSON.stringify(accountOutbox)); }catch(e){}
+}
+function loadOutboxFromDisk(){
+  try{
+    const raw = localStorage.getItem(OUTBOX_KEY);
+    if(!raw) return;
+    const parsed = JSON.parse(raw);
+    accountOutbox = Object.assign(emptyOutbox(), parsed || {});
+    if(!accountOutbox.inserts) accountOutbox.inserts = [];
+    if(!accountOutbox.inspections) accountOutbox.inspections = {};
+    if(!accountOutbox.rares) accountOutbox.rares = {};
+    if(!accountOutbox.deletes) accountOutbox.deletes = [];
+  }catch(e){
+    accountOutbox = emptyOutbox();
+  }
+}
+function toCarInsert(car){
+  const mileageRaw = car.mileage === '' || car.mileage == null ? null : parseInt(car.mileage, 10);
+  const vin = car.vin ? String(car.vin).toUpperCase() : null;
+  return {
+    user_id: accountUserId,
+    year: parseInt(car.year, 10),
+    model: car.model,
+    trans: car.trans ? car.trans : null,
+    color: car.color ? car.color : null,
+    mileage: Number.isFinite(mileageRaw) ? mileageRaw : null,
+    vin: vin || null,
+    status: car.status || 'shopping',
+    notes: car.notes || null,
+    rare_spec_ids: car.rare_spec_ids || [],
+    imported_from_demo_id: car.importedFromDemoId || null,
+  };
+}
+function fromCarRow(row){
+  return {
+    id: row.id,
+    year: String(row.year),
+    model: row.model,
+    trans: row.trans || '',
+    color: row.color || '',
+    mileage: row.mileage == null ? '' : String(row.mileage),
+    vin: row.vin || '',
+    status: row.status || 'shopping',
+    notes: row.notes || '',
+    addedAt: row.added_at,
+    rare_spec_ids: row.rare_spec_ids || [],
+    importedFromDemoId: row.imported_from_demo_id || '',
+    pending: false,
+  };
+}
+function fromInspRow(row){
+  return {
+    id: row.id,
+    carId: row.car_id,
+    savedAt: row.saved_at,
+    done: row.done,
+    flags: row.flags,
+    total: row.total,
+    verdict: row.verdict,
+    verdictClass: row.verdict_class,
+  };
+}
+function loadScript(url, opts){
+  return new Promise(function(resolve, reject){
+    const s = document.createElement('script');
+    s.src = url;
+    s.async = true;
+    if(opts && opts.integrity){
+      s.integrity = opts.integrity;
+      s.crossOrigin = 'anonymous';
+    }
+    s.onload = function(){ resolve(); };
+    s.onerror = function(){ reject(new Error('script')); };
+    document.head.appendChild(s);
+  });
+}
+function setGarageChrome(){
+  const eye = document.querySelector('.garage-screen .garage-eyebrow');
+  if(eye){
+    eye.textContent = accountMode
+      ? 'Section 03 · Saved to your account'
+      : 'Section 03 · Saved in this browser';
+  }
+  const bar = document.getElementById('account-bar');
+  const section = document.getElementById('account-section');
+  if(bar) bar.hidden = !accountMode;
+  if(section) section.hidden = !accountMode;
+  const emailEl = document.getElementById('account-email');
+  if(emailEl) emailEl.textContent = accountEmail || '';
+  updateSignInPill();
+  if(accountMode) refreshImportUi();
+}
+function updateSignInPill(){
+  const btn = document.getElementById('accounts-pill');
+  if(!btn) return;
+  if(accountMode){
+    btn.textContent = 'My garage';
+    btn.setAttribute('aria-label', 'My garage');
+  } else {
+    btn.textContent = 'Sign in';
+    btn.setAttribute('aria-label', 'Sign in');
+  }
+}
+function mountSignInPill(){
+  const row = document.querySelector('.site-header-row1 .r');
+  if(!row || document.getElementById('accounts-pill')) return;
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.id = 'accounts-pill';
+  btn.className = 'accounts-pill';
+  btn.addEventListener('click', onSignInPill);
+  row.insertBefore(btn, row.firstChild);
+  updateSignInPill();
+}
+function onSignInPill(){
+  if(typeof switchTab === 'function') switchTab('garage');
+  if(accountMode) return;
+  const card = document.getElementById('signin-card');
+  if(card){
+    card.style.display = '';
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  mountGoogleButton();
+}
+function sha256Hex(text){
+  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function(buf){
+    return Array.from(new Uint8Array(buf), function(b){
+      return b.toString(16).padStart(2, '0');
+    }).join('');
+  });
+}
+function refreshGoogleNonce(){
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  googleRawNonce = Array.from(bytes, function(b){ return b.toString(16).padStart(2, '0'); }).join('');
+  return sha256Hex(googleRawNonce).then(function(hashed){
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: onGoogleCredential,
+      nonce: hashed,
+      ux_mode: 'popup',
+      use_fedcm_for_prompt: true,
+      auto_select: false,
+      cancel_on_tap_outside: true,
+    });
+  });
+}
+function mountGoogleButton(){
+  if(!window.google || !google.accounts || !google.accounts.id) return Promise.resolve();
+  const el = document.getElementById('google-signin-btn');
+  if(!el) return Promise.resolve();
+  return refreshGoogleNonce().then(function(){
+    el.innerHTML = '';
+    const width = Math.min(320, Math.max(220, el.clientWidth || 280));
+    google.accounts.id.renderButton(el, {
+      type: 'standard',
+      theme: 'outline',
+      size: 'large',
+      text: 'signin_with',
+      shape: 'rectangular',
+      logo_alignment: 'left',
+      width: width,
+    });
+  }).catch(function(){});
+}
+function onGoogleCredential(response){
+  const token = response && response.credential;
+  const nonce = googleRawNonce;
+  if(!sbClient || !token){
+    showSaveWarning();
+    refreshGoogleNonce().catch(function(){});
+    return;
+  }
+  sbClient.auth.signInWithIdToken({
+    provider: 'google',
+    token: token,
+    nonce: nonce,
+  }).then(function(result){
+    if(result.error){
+      showSaveWarning();
+      return;
+    }
+    if(typeof switchTab === 'function') switchTab('garage');
+  }).catch(function(){
+    showSaveWarning();
+  }).then(function(){
+    return refreshGoogleNonce();
+  }).catch(function(){});
+}
+function nameFromUser(user){
+  const meta = (user && user.user_metadata) || {};
+  return meta.full_name || meta.name || meta.given_name || '';
+}
+function enterAccount(session){
+  if(!session || !session.user) return Promise.resolve();
+  if(accountsBusy && accountUserId === session.user.id) return Promise.resolve();
+  accountsBusy = true;
+  accountUserId = session.user.id;
+  accountEmail = session.user.email || '';
+  accountDisplayName = nameFromUser(session.user);
+  accountMode = true;
+  return loadAccountData().then(function(){
+    const card = document.getElementById('signin-card');
+    const app = document.getElementById('garage-app');
+    const banner = document.getElementById('deleted-banner');
+    if(banner) banner.hidden = true;
+    if(card) card.style.display = 'none';
+    const profile = accountCache.profile;
+    if(!profile || !profile.privacy_terms_version){
+      if(app) app.style.display = 'none';
+      showWelcomeSheet();
+    } else {
+      const welcome = document.getElementById('welcome-sheet');
+      if(welcome) welcome.hidden = true;
+      if(app) app.style.display = 'block';
+      fillAccountForm();
+      setGarageChrome();
+      if(typeof renderGarage === 'function') renderGarage();
+      if(typeof refreshCarSelect === 'function') refreshCarSelect();
+      if(typeof renderRareSpec === 'function') renderRareSpec();
+    }
+    return flushOutbox();
+  }).catch(function(){
+    showSaveWarning();
+  }).then(function(){
+    accountsBusy = false;
+  });
+}
+function loadAccountData(){
+  loadOutboxFromDisk();
+  return Promise.all([
+    sbClient.from('cars').select('*').order('added_at', { ascending: true }),
+    sbClient.from('inspections').select('*'),
+    sbClient.from('profiles').select('*').eq('user_id', accountUserId).maybeSingle(),
+  ]).then(function(results){
+    const carsRes = results[0];
+    const inspRes = results[1];
+    const profileRes = results[2];
+    if(carsRes.error || inspRes.error || profileRes.error) showSaveWarning();
+    if(!carsRes.error && carsRes.data) accountCache.cars = carsRes.data.map(fromCarRow);
+    if(!inspRes.error && inspRes.data){
+      accountCache.inspections = inspRes.data.map(fromInspRow);
+      accountCache.answers = {};
+      accountCache.meta = {};
+      inspRes.data.forEach(function(row){
+        accountCache.answers[row.car_id] = row.answers || {};
+        accountCache.meta[row.car_id] = {
+          chassis_key: row.chassis_key || '',
+          trans_key: row.trans_key == null ? '' : row.trans_key,
+        };
+      });
+    }
+    if(!profileRes.error) accountCache.profile = profileRes.data || null;
+    hydrateOutboxIntoCache();
+  });
+}
+function hydrateOutboxIntoCache(){
+  (accountOutbox.inserts || []).forEach(function(car){
+    if(!accountCache.cars.some(function(c){ return c.id === car.id; })) accountCache.cars.push(car);
+  });
+  Object.keys(accountOutbox.inspections || {}).forEach(function(id){
+    const payload = accountOutbox.inspections[id];
+    accountCache.answers[id] = payload.answers || {};
+    accountCache.meta[id] = { chassis_key: payload.chassis_key || '', trans_key: payload.trans_key || '' };
+    const record = {
+      id: 'pending-insp-' + id,
+      carId: id,
+      savedAt: payload.savedAt || new Date().toISOString(),
+      done: payload.done,
+      flags: payload.flags,
+      total: payload.total,
+      verdict: payload.verdict,
+      verdictClass: payload.verdictClass,
+    };
+    const existing = accountCache.inspections.find(function(i){ return i.carId === id; });
+    if(existing) Object.assign(existing, record);
+    else accountCache.inspections.push(record);
+  });
+  Object.keys(accountOutbox.rares || {}).forEach(function(id){
+    const car = accountCache.cars.find(function(c){ return c.id === id; });
+    if(car) car.rare_spec_ids = accountOutbox.rares[id];
+  });
+}
+function showWelcomeSheet(){
+  const sheet = document.getElementById('welcome-sheet');
+  const box = document.getElementById('welcome-shop');
+  const phone = document.getElementById('welcome-phone');
+  const wrap = document.getElementById('welcome-phone-wrap');
+  if(box) box.checked = false;
+  if(phone) phone.value = '';
+  if(wrap) wrap.hidden = true;
+  if(sheet) sheet.hidden = false;
+  setGarageChrome();
+}
+function onShopBoxToggle(which){
+  const box = document.getElementById(which + '-shop');
+  const wrap = document.getElementById(which + '-phone-wrap');
+  const phone = document.getElementById(which + '-phone');
+  const on = !!(box && box.checked);
+  if(wrap) wrap.hidden = !on;
+  if(!on && phone) phone.value = '';
+  if(which === 'account') saveShopContact();
+}
+function continueWelcome(){
+  const box = document.getElementById('welcome-shop');
+  const phoneEl = document.getElementById('welcome-phone');
+  const checked = !!(box && box.checked);
+  const phone = checked && phoneEl ? (phoneEl.value.trim() || null) : null;
+  const row = {
+    user_id: accountUserId,
+    email: accountEmail || null,
+    display_name: accountDisplayName || null,
+    shop_contact_ok: checked,
+    shop_contact_wording_version: SHOP_WORDING_VERSION,
+    phone: phone,
+    privacy_terms_version: PRIVACY_TERMS_VERSION,
+  };
+  return sbClient.from('profiles').upsert(row).select().single().then(function(result){
+    if(result.error){
+      showSaveWarning();
+      return;
+    }
+    accountCache.profile = result.data;
+    const sheet = document.getElementById('welcome-sheet');
+    const app = document.getElementById('garage-app');
+    if(sheet) sheet.hidden = true;
+    if(app) app.style.display = 'block';
+    fillAccountForm();
+    setGarageChrome();
+    if(typeof renderGarage === 'function') renderGarage();
+    if(typeof refreshCarSelect === 'function') refreshCarSelect();
+    refreshImportUi();
+  }).catch(function(){
+    showSaveWarning();
+  });
+}
+function fillAccountForm(){
+  const p = accountCache.profile || {};
+  const box = document.getElementById('account-shop');
+  const phone = document.getElementById('account-phone');
+  const wrap = document.getElementById('account-phone-wrap');
+  if(box) box.checked = !!p.shop_contact_ok;
+  if(phone) phone.value = p.phone || '';
+  if(wrap) wrap.hidden = !p.shop_contact_ok;
+}
+function saveShopContact(){
+  const box = document.getElementById('account-shop');
+  const phoneEl = document.getElementById('account-phone');
+  const checked = !!(box && box.checked);
+  if(!checked && phoneEl) phoneEl.value = '';
+  const phone = checked && phoneEl ? (phoneEl.value.trim() || null) : null;
+  const patch = {
+    shop_contact_ok: checked,
+    phone: phone,
+    shop_contact_wording_version: SHOP_WORDING_VERSION,
+  };
+  accountOutbox.profile = patch;
+  persistOutbox();
+  if(!sbClient) return;
+  sbClient.from('profiles').update(patch).eq('user_id', accountUserId).select().single().then(function(result){
+    if(result.error){
+      showSaveWarning();
+      return;
+    }
+    accountCache.profile = result.data;
+    accountOutbox.profile = null;
+    persistOutbox();
+    hideSaveWarning();
+  }).catch(function(){
+    showSaveWarning();
+  });
+}
+function fillImportCard(){
+  const n = demoCarCount();
+  const noun = n === 1 ? 'car' : 'cars';
+  const copy = document.getElementById('import-copy');
+  const btn = document.getElementById('import-move-btn');
+  if(copy){
+    copy.textContent = 'Move my demo garage into my account? This moves the ' + n + ' ' + noun + ' saved on this device. After that they\'re saved to your account, not just this phone.';
+  }
+  if(btn) btn.textContent = 'Move ' + n + ' ' + noun;
+}
+function refreshImportUi(){
+  const card = document.getElementById('import-card');
+  const link = document.getElementById('move-demo-link');
+  if(!accountMode){
+    if(card) card.hidden = true;
+    if(link) link.hidden = true;
+    return;
+  }
+  const n = demoCarCount();
+  if(n < 1){
+    if(card) card.hidden = true;
+    if(link) link.hidden = true;
+    importCardForced = false;
+    return;
+  }
+  fillImportCard();
+  let dismissed = false;
+  try{ dismissed = localStorage.getItem('da-996-demo-import-dismissed') === '1'; }catch(e){}
+  const showCard = importCardForced || !dismissed;
+  if(card) card.hidden = !showCard;
+  if(link) link.hidden = showCard;
+}
+function showImportCard(){
+  importCardForced = true;
+  refreshImportUi();
+}
+function dismissDemoImport(){
+  importCardForced = false;
+  try{ localStorage.setItem('da-996-demo-import-dismissed', '1'); }catch(e){}
+  refreshImportUi();
+}
+function localAnswersFor(carId){
+  try{
+    const raw = localStorage.getItem('da-996-ppi-car-' + carId);
+    return raw ? cleanAnswers(JSON.parse(raw)) : {};
+  }catch(e){
+    return {};
+  }
+}
+function localSummaryFor(carId){
+  try{
+    const ins = JSON.parse(localStorage.getItem('da-996-inspections-v1') || '[]');
+    return (ins || []).find(function(i){ return i.carId === carId; }) || null;
+  }catch(e){
+    return null;
+  }
+}
+function localRareIds(carId){
+  try{
+    const all = JSON.parse(localStorage.getItem('da-996-rarespec-v1') || '{}');
+    const scope = all[carId] || {};
+    return Object.keys(scope).filter(function(id){ return scope[id] && /^R(?:1[0-4]|[1-9])$/.test(id); });
+  }catch(e){
+    return [];
+  }
+}
+function moveDemoGarage(){
+  const demo = readDemoRaw();
+  const cars = (demo.cars || []).slice();
+  if(!cars.length || !sbClient) return;
+  const btn = document.getElementById('import-move-btn');
+  if(btn) btn.disabled = true;
+  let chain = Promise.resolve();
+  let failed = false;
+  cars.forEach(function(car){
+    chain = chain.then(function(){
+      if(failed) return;
+      return ensureImportedCar(car).then(function(ok){
+        if(!ok) failed = true;
+      });
+    });
+  });
+  return chain.then(function(){
+    if(btn) btn.disabled = false;
+    if(failed){
+      showSaveWarning();
+      if(typeof renderGarage === 'function') renderGarage();
+      return;
+    }
+    clearImportedDemo(cars);
+    return sbClient.from('profiles').update({
+      demo_imported_at: new Date().toISOString(),
+    }).eq('user_id', accountUserId).then(function(){
+      importCardForced = false;
+      try{ localStorage.removeItem('da-996-demo-import-dismissed'); }catch(e){}
+      refreshImportUi();
+      if(typeof renderGarage === 'function') renderGarage();
+      if(typeof refreshCarSelect === 'function') refreshCarSelect();
+      if(typeof renderRareSpec === 'function') renderRareSpec();
+      hideSaveWarning();
+    });
+  }).catch(function(){
+    if(btn) btn.disabled = false;
+    showSaveWarning();
+  });
+}
+function ensureImportedCar(car){
+  const rareIds = localRareIds(car.id);
+  const existing = accountCache.cars.find(function(c){ return c.importedFromDemoId === car.id; });
+  let carPromise;
+  if(existing){
+    carPromise = Promise.resolve(existing);
+  } else {
+    const row = toCarInsert(Object.assign({}, car, { rare_spec_ids: rareIds, importedFromDemoId: car.id }));
+    carPromise = sbClient.from('cars').insert(row).select().single().then(function(result){
+      if(result.error || !result.data) return null;
+      const mapped = fromCarRow(result.data);
+      accountCache.cars.push(mapped);
+      return mapped;
+    });
+  }
+  return carPromise.then(function(mapped){
+    if(!mapped) return false;
+    if(existing && rareIds.length){
+      mapped.rare_spec_ids = rareIds;
+      return sbClient.from('cars').update({ rare_spec_ids: rareIds }).eq('id', mapped.id).then(function(result){
+        if(result.error) return false;
+        return saveImportedInspection(car, mapped);
+      });
+    }
+    return saveImportedInspection(car, mapped);
+  });
+}
+function saveImportedInspection(demoCar, mapped){
+  const answers = localAnswersFor(demoCar.id);
+  const summary = localSummaryFor(demoCar.id);
+  const hasAnswers = Object.keys(answers).length > 0;
+  if(!hasAnswers && !summary) return true;
+  const transKey = demoCar.trans === '6MT' ? 'mt' : (demoCar.trans === 'Tiptronic' ? 'at' : '');
+  const chassisKey = (typeof deriveChassisFromYearModel === 'function')
+    ? deriveChassisFromYearModel(demoCar.year, demoCar.model)
+    : null;
+  const row = {
+    user_id: accountUserId,
+    car_id: mapped.id,
+    answers: answers,
+    chassis_key: chassisKey,
+    trans_key: transKey,
+    done: summary ? summary.done : Object.keys(answers).filter(function(k){ return answers[k] === 'done'; }).length,
+    flags: summary ? summary.flags : Object.keys(answers).filter(function(k){ return answers[k] === 'flag'; }).length,
+    total: summary && summary.total != null ? summary.total : (typeof TOTAL === 'number' ? TOTAL : 48),
+    verdict: summary ? summary.verdict : null,
+    verdict_class: summary ? summary.verdictClass : null,
+    saved_at: summary && summary.savedAt ? summary.savedAt : new Date().toISOString(),
+  };
+  return sbClient.from('inspections').upsert(row, { onConflict: 'car_id' }).select().single().then(function(result){
+    if(result.error || !result.data) return false;
+    const rec = fromInspRow(result.data);
+    const idx = accountCache.inspections.findIndex(function(i){ return i.carId === mapped.id; });
+    if(idx >= 0) accountCache.inspections[idx] = rec;
+    else accountCache.inspections.push(rec);
+    accountCache.answers[mapped.id] = result.data.answers || answers;
+    accountCache.meta[mapped.id] = { chassis_key: chassisKey || '', trans_key: transKey };
+    return true;
+  });
+}
+function clearImportedDemo(cars){
+  const ids = {};
+  cars.forEach(function(c){ ids[c.id] = true; });
+  const g = readDemoRaw();
+  g.cars = (g.cars || []).filter(function(c){ return !ids[c.id]; });
+  if(!g.cars.length) g.signedIn = false;
+  try{ localStorage.setItem('da-996-garage-v1', JSON.stringify(g)); }catch(e){}
+  try{
+    const ins = JSON.parse(localStorage.getItem('da-996-inspections-v1') || '[]').filter(function(i){
+      return !ids[i.carId];
+    });
+    localStorage.setItem('da-996-inspections-v1', JSON.stringify(ins));
+  }catch(e){}
+  try{
+    const rare = JSON.parse(localStorage.getItem('da-996-rarespec-v1') || '{}');
+    Object.keys(ids).forEach(function(id){ delete rare[id]; });
+    localStorage.setItem('da-996-rarespec-v1', JSON.stringify(rare));
+  }catch(e){}
+  Object.keys(ids).forEach(function(id){
+    try{ localStorage.removeItem('da-996-ppi-car-' + id); }catch(e){}
+  });
+  try{
+    const active = localStorage.getItem('da-996-active-car-v1');
+    if(active && ids[active]) localStorage.removeItem('da-996-active-car-v1');
+  }catch(e){}
+}
+function accountAddCar(partial){
+  const localId = 'pending-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+  const car = {
+    id: localId,
+    year: partial.year,
+    model: partial.model,
+    trans: partial.trans || '',
+    color: partial.color || '',
+    mileage: partial.mileage || '',
+    vin: (partial.vin || '').toUpperCase(),
+    status: partial.status || 'shopping',
+    notes: partial.notes || '',
+    addedAt: new Date().toISOString(),
+    rare_spec_ids: partial.rare_spec_ids || [],
+    importedFromDemoId: partial.importedFromDemoId || '',
+    pending: true,
+  };
+  accountCache.cars.push(car);
+  accountOutbox.inserts.push(car);
+  persistOutbox();
+  try{ localStorage.setItem('da-996-active-car-v1', car.id); }catch(e){}
+  if(typeof renderGarage === 'function') renderGarage();
+  if(typeof refreshCarSelect === 'function') refreshCarSelect();
+  const sel = document.getElementById('car-select');
+  if(sel) sel.value = car.id;
+  if(typeof onCarSelectChange === 'function') onCarSelectChange();
+  if(typeof refreshSaveCarButtonState === 'function') refreshSaveCarButtonState();
+  pushCarInsert(car);
+  return car;
+}
+const carInsertJobs = {};
+function pushCarInsert(car){
+  if(!sbClient || !car) return Promise.resolve(false);
+  const oldId = car.id;
+  if(String(oldId).indexOf('pending-') !== 0) return Promise.resolve(false);
+  if(carInsertJobs[oldId]) return carInsertJobs[oldId];
+  const job = sbClient.from('cars').insert(toCarInsert(car)).select().single().then(function(result){
+    if(result.error || !result.data){
+      showSaveWarning();
+      return false;
+    }
+    remapCarId(oldId, result.data);
+    const newId = result.data.id;
+    const follow = [];
+    if(accountOutbox.inspections[newId]) follow.push(pushInspection(newId));
+    if(accountOutbox.rares[newId]){
+      follow.push(sbClient.from('cars').update({ rare_spec_ids: accountOutbox.rares[newId] }).eq('id', newId).then(function(rareResult){
+        if(rareResult.error){
+          showSaveWarning();
+          return;
+        }
+        delete accountOutbox.rares[newId];
+        persistOutbox();
+      }));
+    }
+    return Promise.all(follow).then(function(){
+      if(typeof renderGarage === 'function') renderGarage();
+      if(typeof refreshCarSelect === 'function') refreshCarSelect();
+      flashSaved(1600);
+      hideSaveWarning();
+      return true;
+    });
+  }).catch(function(){
+    showSaveWarning();
+    return false;
+  }).then(function(value){
+    delete carInsertJobs[oldId];
+    return value;
+  });
+  carInsertJobs[oldId] = job;
+  return job;
+}
+function remapCarId(oldId, row){
+  const mapped = fromCarRow(row);
+  const car = accountCache.cars.find(function(c){ return c.id === oldId; });
+  if(car){
+    Object.keys(mapped).forEach(function(key){ car[key] = mapped[key]; });
+  }
+  if(accountCache.answers[oldId]){
+    accountCache.answers[mapped.id] = accountCache.answers[oldId];
+    delete accountCache.answers[oldId];
+  }
+  if(accountCache.meta[oldId]){
+    accountCache.meta[mapped.id] = accountCache.meta[oldId];
+    delete accountCache.meta[oldId];
+  }
+  accountCache.inspections.forEach(function(insp){
+    if(insp.carId === oldId) insp.carId = mapped.id;
+  });
+  if(accountOutbox.inspections[oldId]){
+    accountOutbox.inspections[mapped.id] = accountOutbox.inspections[oldId];
+    delete accountOutbox.inspections[oldId];
+  }
+  if(accountOutbox.rares[oldId]){
+    accountOutbox.rares[mapped.id] = accountOutbox.rares[oldId];
+    delete accountOutbox.rares[oldId];
+  }
+  accountOutbox.inserts = accountOutbox.inserts.filter(function(c){ return c.id !== oldId; });
+  try{
+    if(localStorage.getItem('da-996-active-car-v1') === oldId){
+      localStorage.setItem('da-996-active-car-v1', mapped.id);
+    }
+  }catch(e){}
+  const sel = document.getElementById('car-select');
+  if(sel && sel.value === oldId) sel.value = mapped.id;
+  persistOutbox();
+}
+function accountDeleteCar(id){
+  accountCache.cars = accountCache.cars.filter(function(c){ return c.id !== id; });
+  accountCache.inspections = accountCache.inspections.filter(function(i){ return i.carId !== id; });
+  delete accountCache.answers[id];
+  delete accountCache.meta[id];
+  if(String(id).indexOf('pending-') === 0){
+    accountOutbox.inserts = accountOutbox.inserts.filter(function(c){ return c.id !== id; });
+    delete accountOutbox.inspections[id];
+    delete accountOutbox.rares[id];
+    persistOutbox();
+    finishCarRemoval(id);
+    return;
+  }
+  accountOutbox.deletes.push(id);
+  persistOutbox();
+  finishCarRemoval(id);
+  if(!sbClient){
+    showSaveWarning();
+    return;
+  }
+  sbClient.from('cars').delete().eq('id', id).then(function(result){
+    if(result.error){
+      showSaveWarning();
+      return;
+    }
+    accountOutbox.deletes = accountOutbox.deletes.filter(function(d){ return d !== id; });
+    persistOutbox();
+    hideSaveWarning();
+  }).catch(function(){
+    showSaveWarning();
+  });
+}
+function finishCarRemoval(id){
+  try{
+    if(localStorage.getItem('da-996-active-car-v1') === id){
+      localStorage.removeItem('da-996-active-car-v1');
+      if(typeof STATE !== 'undefined'){
+        STATE = {};
+        if(typeof save === 'function') save();
+      }
+    }
+  }catch(e){}
+  if(typeof renderGarage === 'function') renderGarage();
+  if(typeof refreshCarSelect === 'function') refreshCarSelect();
+}
+function readScoreExtras(){
+  const pctEl = document.getElementById('sc-pct');
+  const wEl = document.getElementById('sc-weighted');
+  const over = document.getElementById('tier1-override');
+  let pct = null;
+  if(pctEl){
+    const n = parseInt(pctEl.textContent, 10);
+    if(Number.isFinite(n)) pct = n;
+  }
+  let weighted = null;
+  if(wEl){
+    const t = (wEl.textContent || '').replace('%', '').replace('+', '').trim();
+    if(t && t !== '—' && t !== '-'){
+      const n = parseInt(t, 10);
+      if(Number.isFinite(n)) weighted = n;
+    }
+  }
+  return {
+    pct: pct,
+    weighted_pct: weighted,
+    tier1_walk: !!(over && over.classList.contains('show')),
+    chassis_key: (typeof getActiveChassis === 'function') ? getActiveChassis() : null,
+    trans_key: (typeof getActiveTrans === 'function') ? getActiveTrans() : '',
+  };
+}
+function accountPersistInspection(carId, done, flags, verdict, vClass){
+  const answers = cleanAnswers(typeof STATE !== 'undefined' ? STATE : {});
+  const extras = readScoreExtras();
+  accountCache.answers[carId] = answers;
+  accountCache.meta[carId] = { chassis_key: extras.chassis_key || '', trans_key: extras.trans_key || '' };
+  const savedAt = new Date().toISOString();
+  const record = {
+    id: 'pending-insp-' + carId,
+    carId: carId,
+    savedAt: savedAt,
+    done: done,
+    flags: flags,
+    total: (typeof TOTAL === 'number' ? TOTAL : 48),
+    verdict: verdict,
+    verdictClass: vClass,
+  };
+  const idx = accountCache.inspections.findIndex(function(i){ return i.carId === carId; });
+  if(idx >= 0){
+    record.id = accountCache.inspections[idx].id || record.id;
+    accountCache.inspections[idx] = Object.assign({}, accountCache.inspections[idx], record);
+  } else {
+    accountCache.inspections.push(record);
+  }
+  accountOutbox.inspections[carId] = {
+    answers: answers,
+    done: done,
+    flags: flags,
+    total: record.total,
+    verdict: verdict,
+    verdictClass: vClass,
+    pct: extras.pct,
+    weighted_pct: extras.weighted_pct,
+    tier1_walk: extras.tier1_walk,
+    chassis_key: extras.chassis_key,
+    trans_key: extras.trans_key,
+    savedAt: savedAt,
+  };
+  persistOutbox();
+  if(typeof renderInspectionsList === 'function') renderInspectionsList();
+  if(String(carId).indexOf('pending-') === 0) return;
+  pushInspection(carId);
+}
+function pushInspection(carId){
+  const payload = accountOutbox.inspections[carId];
+  if(!payload || !sbClient || String(carId).indexOf('pending-') === 0) return Promise.resolve(false);
+  const row = {
+    user_id: accountUserId,
+    car_id: carId,
+    answers: payload.answers || {},
+    chassis_key: payload.chassis_key || null,
+    trans_key: payload.trans_key == null ? null : payload.trans_key,
+    done: payload.done,
+    flags: payload.flags,
+    total: payload.total,
+    verdict: payload.verdict,
+    verdict_class: payload.verdictClass,
+    pct: payload.pct,
+    weighted_pct: payload.weighted_pct,
+    tier1_walk: payload.tier1_walk,
+    saved_at: payload.savedAt || new Date().toISOString(),
+  };
+  return sbClient.from('inspections').upsert(row, { onConflict: 'car_id' }).select().single().then(function(result){
+    if(result.error || !result.data){
+      showSaveWarning();
+      return false;
+    }
+    delete accountOutbox.inspections[carId];
+    persistOutbox();
+    const rec = fromInspRow(result.data);
+    const idx = accountCache.inspections.findIndex(function(i){ return i.carId === carId; });
+    if(idx >= 0) accountCache.inspections[idx] = rec;
+    else accountCache.inspections.push(rec);
+    flashSaved(1200);
+    hideSaveWarning();
+    if(typeof renderInspectionsList === 'function') renderInspectionsList();
+    return true;
+  }).catch(function(){
+    showSaveWarning();
+    return false;
+  });
+}
+function queueRare(carId, ids){
+  accountOutbox.rares[carId] = ids;
+  persistOutbox();
+  if(String(carId).indexOf('pending-') === 0 || !sbClient){
+    showSaveWarning();
+    return;
+  }
+  sbClient.from('cars').update({ rare_spec_ids: ids }).eq('id', carId).then(function(result){
+    if(result.error){
+      showSaveWarning();
+      return;
+    }
+    delete accountOutbox.rares[carId];
+    persistOutbox();
+    hideSaveWarning();
+  }).catch(function(){
+    showSaveWarning();
+  });
+}
+function flushOutbox(){
+  if(!accountMode || !sbClient) return Promise.resolve();
+  const deletes = accountOutbox.deletes.slice();
+  let chain = Promise.resolve();
+  deletes.forEach(function(id){
+    chain = chain.then(function(){
+      return sbClient.from('cars').delete().eq('id', id).then(function(result){
+        if(result.error) throw result.error;
+        accountOutbox.deletes = accountOutbox.deletes.filter(function(d){ return d !== id; });
+        persistOutbox();
+      });
+    });
+  });
+  const inserts = accountOutbox.inserts.slice();
+  inserts.forEach(function(car){
+    chain = chain.then(function(){
+      if(!accountOutbox.inserts.some(function(c){ return c.id === car.id; })) return;
+      return pushCarInsert(car).then(function(ok){
+        if(!ok) throw new Error('insert');
+      });
+    });
+  });
+  chain = chain.then(function(){
+    const ids = Object.keys(accountOutbox.rares);
+    let rareChain = Promise.resolve();
+    ids.forEach(function(id){
+      rareChain = rareChain.then(function(){
+        if(String(id).indexOf('pending-') === 0) return;
+        return sbClient.from('cars').update({ rare_spec_ids: accountOutbox.rares[id] }).eq('id', id).then(function(result){
+          if(result.error) throw result.error;
+          delete accountOutbox.rares[id];
+          persistOutbox();
+        });
+      });
+    });
+    return rareChain;
+  });
+  chain = chain.then(function(){
+    const ids = Object.keys(accountOutbox.inspections);
+    let inspChain = Promise.resolve();
+    ids.forEach(function(id){
+      inspChain = inspChain.then(function(){ return pushInspection(id); });
+    });
+    return inspChain;
+  });
+  chain = chain.then(function(){
+    if(!accountOutbox.profile) return;
+    const patch = accountOutbox.profile;
+    return sbClient.from('profiles').update(patch).eq('user_id', accountUserId).then(function(result){
+      if(result.error) throw result.error;
+      accountOutbox.profile = null;
+      persistOutbox();
+    });
+  });
+  return chain.then(function(){
+    hideSaveWarning();
+    if(typeof renderGarage === 'function') renderGarage();
+  }).catch(function(){
+    showSaveWarning();
+  });
+}
+function clearAccountDeviceCopies(){
+  const ids = (accountCache.cars || []).map(function(c){ return c.id; });
+  (accountOutbox.inserts || []).forEach(function(c){ ids.push(c.id); });
+  let active = null;
+  try{ active = localStorage.getItem('da-996-active-car-v1'); }catch(e){}
+  if(active && ids.indexOf(active) !== -1){
+    try{ localStorage.removeItem('da-996-active-car-v1'); }catch(e){}
+    if(typeof STATE !== 'undefined'){
+      STATE = {};
+      if(typeof save === 'function') save();
+    }
+  }
+  ids.forEach(function(id){
+    try{ localStorage.removeItem('da-996-ppi-car-' + id); }catch(e){}
+  });
+  try{ localStorage.removeItem(OUTBOX_KEY); }catch(e){}
+  accountOutbox = emptyOutbox();
+  accountCache = emptyAccountCache();
+  accountEmail = '';
+  accountUserId = '';
+  accountDisplayName = '';
+}
+function showSignedOutGarage(){
+  accountMode = false;
+  const welcome = document.getElementById('welcome-sheet');
+  if(welcome) welcome.hidden = true;
+  const card = document.getElementById('signin-card');
+  const app = document.getElementById('garage-app');
+  const demo = readDemoRaw();
+  if(demo.signedIn){
+    if(card) card.style.display = 'none';
+    if(app) app.style.display = 'block';
+  } else {
+    if(card) card.style.display = '';
+    if(app) app.style.display = 'none';
+  }
+  setGarageChrome();
+  if(typeof renderGarage === 'function') renderGarage();
+  if(typeof refreshCarSelect === 'function') refreshCarSelect();
+  if(typeof renderRareSpec === 'function') renderRareSpec();
+  if(accountsFeatureOn()) mountGoogleButton();
+}
+function accountSignOut(){
+  clearAccountDeviceCopies();
+  const done = sbClient ? sbClient.auth.signOut() : Promise.resolve();
+  return done.catch(function(){}).then(function(){
+    showSignedOutGarage();
+  });
+}
+function revealDeleteConfirm(){
+  const row = document.getElementById('delete-type-row');
+  if(row) row.hidden = false;
+  const input = document.getElementById('delete-confirm-text');
+  if(input) input.focus();
+}
+function confirmDeleteAccount(){
+  const input = document.getElementById('delete-confirm-text');
+  if(!input || input.value !== 'DELETE') return;
+  if(!sbClient){
+    showSaveWarning();
+    return;
+  }
+  return sbClient.auth.getSession().then(function(result){
+    const session = result.data && result.data.session;
+    if(!session){
+      showSaveWarning();
+      return;
+    }
+    return fetch(SUPABASE_URL + '/functions/v1/delete-account', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + session.access_token,
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+      },
+    }).then(function(res){
+      return res.json().catch(function(){ return { ok: false }; }).then(function(body){
+        if(!res.ok || !body || body.ok !== true){
+          showSaveWarning();
+          return;
+        }
+        clearAccountDeviceCopies();
+        return sbClient.auth.signOut().catch(function(){}).then(function(){
+          showSignedOutGarage();
+          const banner = document.getElementById('deleted-banner');
+          if(banner) banner.hidden = false;
+          if(input) input.value = '';
+          const row = document.getElementById('delete-type-row');
+          if(row) row.hidden = true;
+        });
+      });
+    });
+  }).catch(function(){
+    showSaveWarning();
+  });
+}
+function initAccounts(){
+  if(!accountsFeatureOn()) return;
+  document.documentElement.classList.add('accounts-on');
+  const block = document.getElementById('accounts-signin-block');
+  if(block) block.hidden = false;
+  mountSignInPill();
+  const welcomeShop = document.getElementById('welcome-shop');
+  const accountShop = document.getElementById('account-shop');
+  const accountPhone = document.getElementById('account-phone');
+  if(welcomeShop) welcomeShop.addEventListener('change', function(){ onShopBoxToggle('welcome'); });
+  if(accountShop) accountShop.addEventListener('change', function(){ onShopBoxToggle('account'); });
+  if(accountPhone) accountPhone.addEventListener('change', saveShopContact);
+  window.addEventListener('online', function(){
+    if(accountMode) flushOutbox();
+  });
+  loadScript(
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js',
+    { integrity: 'sha384-BWcjm9OdFth9TbhCxZPdm+gAOUMAzQy9nmTs12ioXdCcbVnJaPMn+fMUoQCLt60R' }
+  ).then(function(){
+    return loadScript('https://accounts.google.com/gsi/client');
+  }).then(function(){
+    sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: false,
+      },
+    });
+    sbClient.auth.onAuthStateChange(function(event, session){
+      if(session && session.user){
+        enterAccount(session);
+      } else if(event === 'SIGNED_OUT' && accountMode){
+        clearAccountDeviceCopies();
+        showSignedOutGarage();
+      }
+    });
+    return sbClient.auth.getSession();
+  }).then(function(result){
+    const session = result && result.data && result.data.session;
+    if(session) return enterAccount(session);
+    return mountGoogleButton();
+  }).catch(function(){
+    showSaveWarning();
+  });
+}
+
+initAccounts();
 
 </script>
 </body>
