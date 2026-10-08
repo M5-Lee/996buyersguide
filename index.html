@@ -4,6 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>996 Buyer's Guide</title>
+<meta name="description" content="Free educational guide for buying a Porsche 996. Not affiliated with Porsche. No guarantees.">
+<meta property="og:title" content="996 Buyer's Guide">
+<meta property="og:description" content="Free educational guide for buying a Porsche 996. Not affiliated with Porsche. No guarantees.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://996buyersguide.com/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="996 Buyer's Guide">
+<meta name="twitter:description" content="Free educational guide for buying a Porsche 996. Not affiliated with Porsche. No guarantees.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Libre+Franklin:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1399,7 +1410,7 @@ section.full-photo{padding:0}
 }
 
 @media (max-width:640px){
-  .site-header-row1{padding:10px 16px 6px;font-size:8px;letter-spacing:0.22em}
+  .site-header-row1{padding:10px 16px 6px;font-size:11px;letter-spacing:0.22em}
   .tab-nav{padding:0 6px}
   .tab-nav button{padding:11px 11px 10px;font-size:10px;letter-spacing:0.18em}
   .tab-nav .tab-num{display:none}
@@ -1407,6 +1418,25 @@ section.full-photo{padding:0}
 /* Centered nowrap tabs clip the first label off-screen below ~530px, and that edge cannot be scrolled back. Left-align so Overview stays reachable. */
 @media (max-width:520px){
   .tab-nav{justify-content:flex-start}
+}
+/* Phone-only right-edge fade so off-screen tabs stay discoverable. Mask does not receive taps. */
+@media (max-width:520px){
+  .tab-nav{
+    -webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 72px),transparent 100%);
+    mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 72px),transparent 100%);
+    -webkit-mask-size:100% 100%;mask-size:100% 100%;
+    -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  }
+}
+/* Phone tap targets: checklist Yes/No, Save, Print, Reset. Desktop sizes stay as written. */
+@media (max-width:520px){
+  .cl-actions button,
+  .vp-save-car,
+  .vp-print-btn,
+  .sc-reset{
+    min-height:44px;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
 }
 
 /* tab panels */
@@ -1501,7 +1531,7 @@ section.full-photo{padding:0}
 .signin-card input:focus{outline:0;border-color:var(--accent)}
 .signin-actions{
   display:flex;gap:10px;margin-top:22px;
-  flex-wrap:wrap;align-items:center;
+  flex-wrap:wrap;align-items:flex-start;
 }
 .btn-primary{
   appearance:none;border:0;
@@ -1526,6 +1556,14 @@ section.full-photo{padding:0}
   color:var(--ink-2);line-height:1.6;
 }
 .signin-meta a{color:var(--accent);font-weight:600;cursor:pointer}
+.demo-garage-cta{
+  display:inline-flex;flex-direction:column;align-items:flex-start;gap:6px;
+  max-width:100%;
+}
+.demo-garage-note{
+  font-family:var(--sans);font-size:11px;font-weight:500;
+  color:var(--ink-3);line-height:1.35;letter-spacing:0.01em;
+}
 
 .garage-section{margin-top:56px}
 .garage-section .section-head{
@@ -2930,7 +2968,10 @@ section.full-photo{padding:0}
       </div>
       <div class="signin-actions">
         <button class="btn-primary" onclick="garageMockSignIn()">Sign in</button>
-        <button class="btn-secondary" onclick="garageMockSignIn()">Create account</button>
+        <span class="demo-garage-cta">
+          <button class="btn-secondary" onclick="garageMockSignIn()">Start demo garage</button>
+          <span class="demo-garage-note">Saved only on this device</span>
+        </span>
         <span class="signin-meta">Demo mock — not a real account. <a onclick="garageMockSignIn()">Or skip and try the demo</a> →</span>
       </div>
       <p class="signin-meta">This is a demo mock, not a real account. Anything you save stays in this browser only and clears if site data is wiped. Cloud sync is not live.</p>
