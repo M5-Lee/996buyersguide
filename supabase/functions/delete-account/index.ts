@@ -93,7 +93,13 @@ Deno.serve(async (req) => {
   })
 
   try {
+    // Photo policies allow a delete only while the car row still exists.
+    // Remove files, then photo rows, then the auth user (cars cascade from that).
     await removeUserPhotos(admin, uid)
+    const { error: photoRowError } = await admin.from('photos').delete().eq('user_id', uid)
+    if (photoRowError) {
+      return json({ ok: false, error: 'delete' }, 500, cors)
+    }
     const { error: deleteError } = await admin.auth.admin.deleteUser(uid)
     if (deleteError) {
       return json({ ok: false, error: 'delete' }, 500, cors)

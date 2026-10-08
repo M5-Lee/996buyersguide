@@ -2190,6 +2190,13 @@ html.accounts-on #demo-card-heading{display:none}
 }
 .signin-divider{border:0;border-top:1px solid var(--rule);margin:22px 0}
 #google-signin-btn{min-height:44px}
+#signin-google-plain{
+  appearance:none;background:#fff;color:var(--ink);
+  border:1px solid var(--rule);border-radius:4px;
+  min-height:44px;padding:0 16px;width:100%;max-width:320px;
+  font-family:var(--sans);font-size:15px;font-weight:500;
+  letter-spacing:normal;text-transform:none;cursor:pointer;
+}
 .account-bar{
   display:flex;justify-content:space-between;align-items:center;gap:12px;
   flex-wrap:wrap;margin-bottom:28px;
@@ -3076,7 +3083,7 @@ html.accounts-on #demo-card-heading{display:none}
     <div class="signin-card" id="signin-card">
       <h3 id="demo-card-heading">Try the demo <em style="font-style:italic;color:var(--ink-3);font-weight:300">— data stays in this browser</em></h3>
       <div id="accounts-signin-block" class="accounts-only" hidden>
-        <div id="google-signin-btn"></div>
+        <div id="google-signin-btn"><button type="button" id="signin-google-plain" onclick="beginSignIn()">Sign in with Google</button></div>
         <p class="signin-meta">Free educational guide. No guarantees about any car or purchase. Not affiliated with Porsche.</p>
         <p class="signin-meta">By signing in you agree to our <a href="/terms">Terms</a> and <a href="/privacy">Privacy page</a>.</p>
         <hr class="signin-divider">
@@ -5191,16 +5198,36 @@ function accountDeleteCar(id){
     showSaveWarning();
     return;
   }
-  sbClient.from('cars').delete().eq('id', id).then(function(result){
-    if(result.error){
-      showSaveWarning();
-      return;
-    }
+  deleteCarOnServer(id).then(function(){
     accountOutbox.deletes = accountOutbox.deletes.filter(function(d){ return d !== id; });
     persistOutbox();
     hideSaveWarning();
   }).catch(function(){
     showSaveWarning();
+  });
+}
+function deleteCarOnServer(id){
+  if(!sbClient || String(id).indexOf('pending-') === 0) return Promise.resolve(false);
+  return sbClient.from('photos').select('storage_path').eq('car_id', id).then(function(photoResult){
+    if(photoResult.error) throw photoResult.error;
+    const rows = photoResult.data || [];
+    const paths = rows.map(function(row){ return row.storage_path; }).filter(Boolean);
+    const removeFiles = paths.length
+      ? sbClient.storage.from('car-photos').remove(paths).then(function(removeResult){
+          if(removeResult && removeResult.error) throw removeResult.error;
+        })
+      : Promise.resolve();
+    return removeFiles.then(function(){
+      if(!rows.length) return;
+      return sbClient.from('photos').delete().eq('car_id', id).then(function(rowResult){
+        if(rowResult.error) throw rowResult.error;
+      });
+    });
+  }).then(function(){
+    return sbClient.from('cars').delete().eq('id', id).then(function(result){
+      if(result.error) throw result.error;
+      return true;
+    });
   });
 }
 function finishCarRemoval(id){
@@ -5347,8 +5374,7 @@ function flushOutbox(){
   let chain = Promise.resolve();
   deletes.forEach(function(id){
     chain = chain.then(function(){
-      return sbClient.from('cars').delete().eq('id', id).then(function(result){
-        if(result.error) throw result.error;
+      return deleteCarOnServer(id).then(function(){
         accountOutbox.deletes = accountOutbox.deletes.filter(function(d){ return d !== id; });
         persistOutbox();
       });

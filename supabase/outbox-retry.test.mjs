@@ -47,6 +47,7 @@ const names = [
   'pushInspection',
   'pushCarInsert',
   'flushOutbox',
+  'deleteCarOnServer',
 ]
 
 const SERVER = '11111111-1111-4111-8111-111111111111'
@@ -273,4 +274,68 @@ const offlineThenSaved = boot()
   assert(car.id === SERVER, 'local id was not swapped after the insert')
 }
 
-console.log('outbox-retry.test.mjs: 3 cases passed')
+const CAR = '22222222-2222-4222-8222-222222222222'
+function recordClient(ops, photos) {
+  return {
+    from(table) {
+      return {
+        select() {
+          ops.push(table + '.select')
+          return { eq() { return Promise.resolve({ data: photos, error: null }) } }
+        },
+        delete() {
+          return {
+            eq() {
+              ops.push(table + '.delete')
+              return Promise.resolve({ error: null })
+            },
+          }
+        },
+      }
+    },
+    storage: {
+      from(bucket) {
+        return {
+          remove(paths) {
+            ops.push('storage.remove:' + bucket + ':' + paths.join(','))
+            return Promise.resolve({ error: null })
+          },
+        }
+      },
+    },
+  }
+}
+
+const withPhotos = boot()
+{
+  const ops = []
+  withPhotos.sbClient = recordClient(ops, [{ storage_path: 'user-1/' + CAR + '/a.jpg' }])
+  const ok = await withPhotos.deleteCarOnServer(CAR)
+  assert(ok === true, 'car delete did not finish')
+  assert(ops.join(' > ') === [
+    'photos.select',
+    'storage.remove:car-photos:user-1/' + CAR + '/a.jpg',
+    'photos.delete',
+    'cars.delete',
+  ].join(' > '), 'delete order was ' + ops.join(' > '))
+}
+
+const noPhotos = boot()
+{
+  const ops = []
+  noPhotos.sbClient = recordClient(ops, [])
+  const ok = await noPhotos.deleteCarOnServer(CAR)
+  assert(ok === true, 'car delete without photos did not finish')
+  assert(ops.join(' > ') === 'photos.select > cars.delete', 'empty photo delete order was ' + ops.join(' > '))
+}
+
+const fn = readFileSync(join(root, 'supabase/functions/delete-account/index.ts'), 'utf8')
+{
+  const files = fn.indexOf('await removeUserPhotos(admin, uid)')
+  const rows = fn.indexOf("admin.from('photos').delete()")
+  const user = fn.indexOf('admin.auth.admin.deleteUser(uid)')
+  assert(files !== -1 && rows !== -1 && user !== -1, 'delete-account is missing a photo or user delete')
+  assert(files < rows && rows < user, 'delete-account does not remove files and photo rows before the user')
+}
+
+console.log('outbox-retry.test.mjs: 5 cases passed')
